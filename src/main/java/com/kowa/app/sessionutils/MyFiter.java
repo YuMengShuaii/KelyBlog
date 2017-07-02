@@ -24,6 +24,10 @@ public class MyFiter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		//这里填写你允许进行跨域的主机ip
+		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "*");
+		//允许的访问方法
+		((HttpServletResponse)response).setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
 		ContextHolder.setHttpRequest((HttpServletRequest) request);
 		ContextHolder.setHttpResponse((HttpServletResponse) response);
 		ContextHolder.setSession(((HttpServletRequest) request).getSession());
