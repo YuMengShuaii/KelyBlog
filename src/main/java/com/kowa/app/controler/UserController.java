@@ -50,12 +50,6 @@ public class UserController {
         return mapper.writeValueAsString(re);
     }
 
-
-    @RequestMapping("/")
-    public String home(Model model) {
-        return "test";
-    }
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public String login(@RequestParam("username") String uname, @RequestParam("password") String password) throws IOException {
