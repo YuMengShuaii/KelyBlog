@@ -2,154 +2,128 @@ package com.kowa.app.controler;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kowa.app.config.ProjectConfig;
 import com.kowa.app.dao.UserDao;
-import com.kowa.app.jsonmodel.result;
-import com.kowa.app.po.UserPo;
-import com.kowa.app.sessionutils.ContextHolder;
+import com.kowa.app.jsonmodel.Result;
+import com.kowa.app.service.IUserService;
 import com.kowa.app.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 
+/**
+ *
+ * @Auther yumengshuai【kely】
+ * @Date   17/7/3 下午1:56
+ * User控制器
+ */
 @Controller
 public class UserController {
-
-    private final ResourceLoader resourceLoader;
+    /**
+     * Json解析器
+     */
     ObjectMapper mapper = new ObjectMapper();
+
+    /**
+     * User表操作类
+     */
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    public UserController(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
 
+    @Autowired
+    private IUserService userService;
+
+    /**
+     * 检查是否登录
+     * @return json
+     * @throws IOException json解析异常
+     */
     @RequestMapping(value = "/islogin", method = RequestMethod.GET)
     @ResponseBody
     public String isLogin() throws IOException {
-        result re = new result();
-        UserPo currentUser = ContextHolder.getCurrentMember();
+        UserVo currentUser = userService.isLogin();
         if (currentUser == null) {
-            re.setResult(0);
-            re.setMessage("未登录");
+            return mapper.writeValueAsString(new Result("未登录!"));
         } else {
-            re.setResult(1);
-            re.setMessage("已登录");
-            re.setData(new UserVo(currentUser));
+            return mapper.writeValueAsString(new Result("已登录",currentUser));
         }
-        return mapper.writeValueAsString(re);
     }
 
+    /**
+     * 登录
+     * @param uname     用户名
+     * @param password  密码
+     * @return
+     * @throws IOException json解析异常
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public String login(@RequestParam("username") String uname, @RequestParam("password") String password) throws IOException {
-        result re = new result();
-        if (uname.isEmpty() || password.isEmpty()) {
-            re.setResult(0);
-            re.setMessage("输入不合法！");
+        UserVo user = userService.login(uname,password);
+        if (user==null){
+            return mapper.writeValueAsString(new Result("登录失败，请重试！"));
+        }else{
+            return mapper.writeValueAsString(new Result("登陆成功！",user));
         }
-        List<UserPo> user = userDao.findByUsername(uname);
-        if (user == null || user.size() == 0) {
-            re.setResult(0);
-            re.setMessage("用户名错误，核对后输入！");
-        } else {
-            if (user.get(0).getPassword().equals(password)) {
-                re.setResult(1);
-                re.setMessage("登陆成功！");
-                re.setData(new UserVo(user.get(0)));
-                ContextHolder.setCurrentMember(user.get(0), 60 * 60 * 24 * 14);
-            }
-        }
-        return mapper.writeValueAsString(re);
     }
 
+    /**
+     * 退出登录
+     * @return json
+     * @throws IOException json解析异常
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
     public String logout() throws IOException {
-        result re = new result();
-        if (ContextHolder.getCurrentMember() != null) {
-            ContextHolder.clearCurrentMember();
-            ContextHolder.clearSesstion();
-        }
-        re.setResult(1);
-        re.setMessage("退出登录成功！");
-        return mapper.writeValueAsString(re);
+        userService.logout();
+        return mapper.writeValueAsString(new Result("退出登录成功！"));
     }
 
+    /**
+     * 修改个人资料
+     * @param name    昵称
+     * @param phone   手机号
+     * @param sex     性别
+     * @param content 个人签名
+     * @return
+     * @throws IOException  json解析异常
+     */
     @RequestMapping(value = "/editinfo", method = RequestMethod.GET)
     @ResponseBody
     public String editInfo(@RequestParam("nikename") String name
             , @RequestParam("phone") String phone
             , @RequestParam("sex") int sex
             , @RequestParam("content") String content) throws IOException {
-        result re = new result();
-        UserPo user = ContextHolder.getCurrentMember();
+        UserVo user = userService.editInfo(name,phone,sex,content);
         if (user == null) {
-            re.setMessage("尚未登录！");
-            re.setResult(0);
-            return mapper.writeValueAsString(re);
+            return mapper.writeValueAsString(new Result("尚未登录！"));
         } else {
-            user.setName(name);
-            user.setPhone(phone);
-            user.setSex(sex);
-            user.setContent(content);
-            userDao.save(user);
-            ContextHolder.updataCurrentMember(user);
-            re.setMessage("修改成功！");
-            re.setResult(1);
-            re.setData(new UserVo(user));
-            return mapper.writeValueAsString(re);
+            return mapper.writeValueAsString(new Result("修改成功！",user));
         }
     }
 
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        String filename = System.currentTimeMillis() + "k.jpg";
-        System.out.println(filename);
-        Files.copy(file.getInputStream(), Paths.get(ProjectConfig.getImageSource(), filename));
-        return ProjectConfig.LocalImageurl + filename;
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "static/file/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<?> getFile(@PathVariable String filename) {
-
-        try {
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + Paths.get(ProjectConfig.getImageSource(), filename).toString()));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
+    /**
+     * 注册账号
+     * @param uname     用户名
+     * @param password  密码
+     * @return          json
+     * @throws IOException
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public String saveUser(@RequestParam("username") String uname, @RequestParam("password") String password) throws IOException {
-        result re = new result();
-        if (uname.isEmpty() || password.isEmpty()) {
-            re.setResult(0);
-            re.setMessage("注册失败：用户名或者密码为空！");
-            return mapper.writeValueAsString(re);
-        } else {
-            UserPo user = new UserPo();
-            user.setUsername(uname);
-            user.setPassword(password);
-            userDao.save(user);
-            re.setResult(1);
-            re.setMessage("注册成功！");
-            ContextHolder.setCurrentMember(user, 60 * 60 * 24 * 14);
-            re.setData(new UserVo(user));
-            return mapper.writeValueAsString(re);
+    public String saveUser(@RequestParam("nikename") String nikename,@RequestParam("username") String uname, @RequestParam("password") String password) throws IOException {
+        if (!userService.checkUname(uname)){
+           return mapper.writeValueAsString(new Result("该账号已存在！"));
+        }
+        UserVo user = userService.register(nikename,uname,password);
+        if (user==null){
+            return mapper.writeValueAsString(new Result("注册失败，请检查账号密码！"));
+        }else{
+            return mapper.writeValueAsString(new Result("注册成功！",user));
         }
     }
 }  

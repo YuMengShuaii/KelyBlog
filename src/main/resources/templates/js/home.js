@@ -1,7 +1,6 @@
 /**
  * Created by Administrator on 2017/7/2.
  */
-Vue.prototype.$http = axios
 var app = new Vue({
     el: '#app',
     data: {

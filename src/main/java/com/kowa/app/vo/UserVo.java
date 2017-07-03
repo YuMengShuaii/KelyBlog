@@ -1,7 +1,5 @@
 package com.kowa.app.vo;
 
-import javax.persistence.Column;
-
 import com.kowa.app.po.UserPo;
 
 public class UserVo {
