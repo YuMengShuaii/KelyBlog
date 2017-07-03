@@ -1,6 +1,6 @@
 package com.kowa.app;
 
-import com.kowa.app.sessionutils.MyFiter;
+import com.kowa.app.sessionutils.ContextFiter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -26,7 +26,7 @@ public class AppLaunch {
     public FilterRegistrationBean testFilterRegistration() {
 
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new MyFiter());
+        registration.setFilter(new ContextFiter());
         return registration;
     }
 }
