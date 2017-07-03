@@ -117,7 +117,7 @@ public class UserController {
     public String handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         String filename = System.currentTimeMillis() + "k.jpg";
         System.out.println(filename);
-        Files.copy(file.getInputStream(), Paths.get(ProjectConfig.IMAGESOURCE, filename));
+        Files.copy(file.getInputStream(), Paths.get(ProjectConfig.getImageSource(), filename));
         return ProjectConfig.LocalImageurl + filename;
     }
 
@@ -126,7 +126,7 @@ public class UserController {
     public ResponseEntity<?> getFile(@PathVariable String filename) {
 
         try {
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + Paths.get(ProjectConfig.IMAGESOURCE, filename).toString()));
+            return ResponseEntity.ok(resourceLoader.getResource("file:" + Paths.get(ProjectConfig.getImageSource(), filename).toString()));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
