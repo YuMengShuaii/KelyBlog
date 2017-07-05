@@ -8,6 +8,8 @@ import com.kowa.app.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/7/2.
  */
@@ -82,8 +84,9 @@ public class UserService implements IUserService {
 
     @Override
     public boolean checkUname(String uname) {
-        if (userDao.findByUsername(uname)==null)return false;
-        return true;
+
+        if (userDao.findByUsername(uname)==null){return true;}
+        return false;
     }
 
 
