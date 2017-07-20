@@ -31,11 +31,11 @@ public class ProjectConfig {
     /**
      * Windows平台图片路径
      */
-    private static final String IMAGESOURCE_WINDOWS = "E:/ImageCache";
+    private static final String IMAGESOURCE_WINDOWS = "E:/ImageCache/";
     /**
      * Mac平台图片路径
      */
-    private static final String IMAGESOURCE_MAC = "/Users/LDD/Downloads";
+    private static final String IMAGESOURCE_MAC = "/Users/LDD/Downloads/";
 
     /**
      * 根据平台获取对应图片路径

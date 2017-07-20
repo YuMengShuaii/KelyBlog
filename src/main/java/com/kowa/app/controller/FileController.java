@@ -51,20 +51,4 @@ public class FileController {
         }
     }
 
-    /**
-     * 访问图片的公共接口
-     *
-     * @param filename 文件名
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "static/file/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<?> getFile(@PathVariable String filename) {
-        try {
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + Paths.get(ProjectConfig.getImageSource(), filename).toString()));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }
