@@ -1,4 +1,4 @@
-package com.kowa.app.controler;
+package com.kowa.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kowa.app.config.ProjectConfig;

@@ -1,4 +1,4 @@
-package com.kowa.app.controler;
+package com.kowa.app.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

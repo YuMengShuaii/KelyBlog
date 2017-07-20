@@ -1,9 +1,6 @@
-package com.kowa.app.controler;
+package com.kowa.app.controller;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kowa.app.jsonmodel.JsonUtils;
-import com.kowa.app.jsonmodel.Result;
 import com.kowa.app.service.IUserService;
 import com.kowa.app.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.io.IOException;
 
 /**
@@ -123,7 +121,6 @@ public class UserController {
      * 修改头像
      * @param face 头像url
      * @return
-     * @throws JsonProcessingException json转换异常
      */
     @RequestMapping(value = "/updataface",method = RequestMethod.POST)
     @ResponseBody
