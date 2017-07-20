@@ -1,4 +1,4 @@
-package com.kowa.app.sessionutils;
+package com.kowa.app.context;
 import java.io.IOException;
 
 import javax.servlet.Filter;

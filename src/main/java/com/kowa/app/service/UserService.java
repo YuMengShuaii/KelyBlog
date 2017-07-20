@@ -2,13 +2,11 @@ package com.kowa.app.service;
 
 import com.kowa.app.dao.UserDao;
 import com.kowa.app.po.UserPo;
-import com.kowa.app.sessionutils.ContextHolder;
+import com.kowa.app.context.ContextHolder;
 import com.kowa.app.utils.Utils;
 import com.kowa.app.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/2.
@@ -21,6 +19,8 @@ public class UserService implements IUserService {
     @Autowired
     private UserDao userDao;
 
+
+    @Override
     public UserVo login(String username, String password){
         UserPo user = userDao.findByUsername(username);
         if (user==null){
@@ -78,6 +78,22 @@ public class UserService implements IUserService {
             user.setPassword(password);
             userDao.save(user);
             ContextHolder.setCurrentMember(user, 60 * 60 * 24 * 14);
+            return new UserVo(user);
+        }
+    }
+
+    @Override
+    public UserVo editFace(String face) {
+        if (Utils.isEmpty(face)){
+            return null;
+        }
+        UserPo user = ContextHolder.getCurrentMember();
+        if (user==null){
+            return null;
+        }else{
+            user.setFace(face);
+            userDao.save(user);
+            ContextHolder.updataCurrentMember(user);
             return new UserVo(user);
         }
     }

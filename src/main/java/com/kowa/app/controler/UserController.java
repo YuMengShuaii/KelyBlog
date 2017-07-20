@@ -1,8 +1,8 @@
 package com.kowa.app.controler;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kowa.app.dao.UserDao;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kowa.app.jsonmodel.JsonUtils;
 import com.kowa.app.jsonmodel.Result;
 import com.kowa.app.service.IUserService;
 import com.kowa.app.vo.UserVo;
@@ -22,18 +22,10 @@ import java.io.IOException;
  */
 @Controller
 public class UserController {
-    /**
-     * Json解析器
-     */
-    ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * User表操作类
+     * User服务类
      */
-    @Autowired
-    private UserDao userDao;
-
-
     @Autowired
     private IUserService userService;
 
@@ -44,12 +36,12 @@ public class UserController {
      */
     @RequestMapping(value = "/islogin", method = RequestMethod.GET)
     @ResponseBody
-    public String isLogin() throws IOException {
+    public String isLogin() {
         UserVo currentUser = userService.isLogin();
         if (currentUser == null) {
-            return mapper.writeValueAsString(new Result("未登录!"));
+            return JsonUtils.getErrorJson("未登录!");
         } else {
-            return mapper.writeValueAsString(new Result("已登录",currentUser));
+            return JsonUtils.getSuccessJson("已登录",currentUser);
         }
     }
 
@@ -62,12 +54,12 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public String login(@RequestParam("username") String uname, @RequestParam("password") String password) throws IOException {
+    public String login(@RequestParam("username") String uname, @RequestParam("password") String password) {
         UserVo user = userService.login(uname,password);
         if (user==null){
-            return mapper.writeValueAsString(new Result("登录失败，请重试！"));
+            return JsonUtils.getErrorJson("登录失败，请重试！");
         }else{
-            return mapper.writeValueAsString(new Result("登陆成功！",user));
+            return JsonUtils.getSuccessJson("登陆成功！",user);
         }
     }
 
@@ -78,9 +70,9 @@ public class UserController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
-    public String logout() throws IOException {
+    public String logout() {
         userService.logout();
-        return mapper.writeValueAsString(new Result("退出登录成功！"));
+        return JsonUtils.getSuccessJson("退出登录成功！","");
     }
 
     /**
@@ -97,12 +89,12 @@ public class UserController {
     public String editInfo(@RequestParam("nikename") String name
             , @RequestParam("phone") String phone
             , @RequestParam("sex") int sex
-            , @RequestParam("content") String content) throws IOException {
+            , @RequestParam("content") String content) {
         UserVo user = userService.editInfo(name,phone,sex,content);
         if (user == null) {
-            return mapper.writeValueAsString(new Result("尚未登录！"));
+            return JsonUtils.getErrorJson("尚未登录！");
         } else {
-            return mapper.writeValueAsString(new Result("修改成功！",user));
+            return JsonUtils.getSuccessJson("修改成功！",user);
         }
     }
 
@@ -115,15 +107,32 @@ public class UserController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public String saveUser(@RequestParam("nikename") String nikename,@RequestParam("username") String uname, @RequestParam("password") String password) throws IOException {
+    public String saveUser(@RequestParam("nikename") String nikename,@RequestParam("username") String uname, @RequestParam("password") String password) {
         if (!userService.checkUname(uname)){
-           return mapper.writeValueAsString(new Result("该账号已存在！"));
+           return JsonUtils.getErrorJson("该账号已存在！");
         }
         UserVo user = userService.register(nikename,uname,password);
         if (user==null){
-            return mapper.writeValueAsString(new Result("注册失败，请检查账号密码！"));
+            return JsonUtils.getErrorJson("注册失败，请检查账号密码！");
         }else{
-            return mapper.writeValueAsString(new Result("注册成功！",user));
+            return JsonUtils.getSuccessJson("注册成功！",user);
         }
+    }
+
+    /**
+     * 修改头像
+     * @param face 头像url
+     * @return
+     * @throws JsonProcessingException json转换异常
+     */
+    @RequestMapping(value = "/updataface",method = RequestMethod.POST)
+    @ResponseBody
+    public String upDataFace(@RequestParam("face") String face) {
+       UserVo user =  userService.editFace(face);
+       if (user==null){
+           return JsonUtils.getErrorJson("头像修改失败！");
+       }else{
+           return JsonUtils.getSuccessJson("头像修改成功！",user);
+       }
     }
 }  

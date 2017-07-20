@@ -43,12 +43,11 @@ public class ProjectConfig {
      * @return 图片路径
      */
     public static String getImageSource(){
-        String source;
         if (System.getProperty("os.name").contains("Mac")){
-            source=IMAGESOURCE_MAC;
+            return IMAGESOURCE_MAC;
         }else{
-            source=IMAGESOURCE_WINDOWS;
+            return IMAGESOURCE_WINDOWS;
         }
-        return source;
     }
+
 }

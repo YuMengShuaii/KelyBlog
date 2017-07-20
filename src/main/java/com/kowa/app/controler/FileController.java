@@ -1,9 +1,8 @@
 package com.kowa.app.controler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kowa.app.config.ProjectConfig;
-import com.kowa.app.jsonmodel.Result;
+import com.kowa.app.jsonmodel.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +21,6 @@ import java.nio.file.Paths;
  */
 @Controller
 public class FileController {
-
-    /**
-     * Json解析器
-     */
-    ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 资源加载器
@@ -51,9 +45,9 @@ public class FileController {
         String filename = System.currentTimeMillis() + "k.jpg";
         try {
             Files.copy(file.getInputStream(), Paths.get(ProjectConfig.getImageSource(), filename));
-            return mapper.writeValueAsString(new Result("上传成功！", ProjectConfig.LocalImageurl + filename));
+            return JsonUtils.getSuccessJson("上传成功！", ProjectConfig.LocalImageurl + filename);
         } catch (IOException e) {
-            return mapper.writeValueAsString(new Result("上传失败！"));
+            return JsonUtils.getErrorJson("上传失败！");
         }
     }
 

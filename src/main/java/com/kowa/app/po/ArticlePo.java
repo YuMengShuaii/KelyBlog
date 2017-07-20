@@ -19,6 +19,11 @@ public class ArticlePo {
     private int id;
 
     @Column(name = "user_id")
-    private int sex;
+    private int userid;
+
+    @Column(name = "category")
+    private int category;
+
+
 
 }

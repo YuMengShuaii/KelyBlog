@@ -1,11 +1,11 @@
 package com.kowa.app.jsonmodel;
 
-public class Result<T> {
+public class Result {
     private int result;
     private String message;
-    private T data;
+    private Object data;
 
-    public Result(String message, T data) {
+    public Result(String message, Object data) {
         this.message = message;
         this.data = data;
         this.result = 1;
@@ -36,25 +36,17 @@ public class Result<T> {
         this.message = message;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 
-    private void setData(int result, String message, T data) {
+    private void setData(int result, String message, Object data) {
         this.result = result;
         this.data = data;
         this.message = message;
-    }
-
-    public void setSuccessData(String message, T data) {
-        setData(1, message, data);
-    }
-
-    public void setFaildData(String message) {
-        setData(0, message, null);
     }
 }

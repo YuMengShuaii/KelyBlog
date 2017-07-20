@@ -16,5 +16,7 @@ public interface IUserService {
 
      UserVo  register(String nikename,String username,String password);
 
+     UserVo  editFace(String face);
+
      boolean checkUname(String uname);
 }

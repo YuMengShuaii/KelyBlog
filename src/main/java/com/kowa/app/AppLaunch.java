@@ -1,6 +1,6 @@
 package com.kowa.app;
 
-import com.kowa.app.sessionutils.ContextFiter;
+import com.kowa.app.context.ContextFiter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
