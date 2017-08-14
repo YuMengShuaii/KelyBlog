@@ -5,7 +5,6 @@ import com.kowa.app.config.ProjectConfig;
 import com.kowa.app.jsonmodel.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +41,7 @@ public class FileController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
     public String handleFileUpload(@RequestParam MultipartFile file) throws JsonProcessingException {
-        String filename = System.currentTimeMillis() + "k.jpg";
+        String filename = System.currentTimeMillis() + "kowo_file.jpg";
         try {
             Files.copy(file.getInputStream(), Paths.get(ProjectConfig.getImageSource(), filename));
             return JsonUtils.getSuccessJson("上传成功！", ProjectConfig.LocalImageurl + filename);
