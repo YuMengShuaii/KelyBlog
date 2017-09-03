@@ -1,5 +1,6 @@
 package com.kowa.app.controller;
 
+import com.kowa.app.aop.LoginHelper;
 import com.kowa.app.jsonmodel.JsonUtils;
 import com.kowa.app.service.IUserService;
 import com.kowa.app.vo.UserVo;
@@ -84,16 +85,13 @@ public class UserController {
      */
     @RequestMapping(value = "/editinfo", method = RequestMethod.GET)
     @ResponseBody
+    @LoginHelper
     public String editInfo(@RequestParam("nikename") String name
             , @RequestParam("phone") String phone
             , @RequestParam("sex") int sex
             , @RequestParam("content") String content) {
         UserVo user = userService.editInfo(name,phone,sex,content);
-        if (user == null) {
-            return JsonUtils.getErrorJson("尚未登录！");
-        } else {
-            return JsonUtils.getSuccessJson("修改成功！",user);
-        }
+        return JsonUtils.getSuccessJson("修改成功！",user);
     }
 
     /**
@@ -124,6 +122,7 @@ public class UserController {
      */
     @RequestMapping(value = "/updataface",method = RequestMethod.POST)
     @ResponseBody
+    @LoginHelper
     public String upDataFace(@RequestParam("face") String face) {
        UserVo user =  userService.editFace(face);
        if (user==null){

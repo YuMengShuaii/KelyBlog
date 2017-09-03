@@ -1,23 +1,20 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./templates/css/home.css" type="text/css" >
 </head>
 <body>
 <h1  id="app"> {{ message }}</h1>
 <div id="app-2">
-  <span v-bind:title="message">
-    鼠标悬停几秒钟查看此处动态绑定的提示信息！
+  <span class="blue_solid" v-bind:title="message">
+    鼠标悬停几秒钟查aSAsSss看此处动态绑定的提示信息！
   </span>
 </div>
 <div id="app-5">
-    <p>{{ message }}</p>
-    <button v-on:click="reverseMessage">逆转消息</button>
+    <p id="message">{{ message }}</p>
+    <button v-on:click="loadData">逆转消息</button>
 </div>
-<div id="test-editormd"></div>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="templates/lib/vue/vue.js"></script>
 <script src="templates/lib/axios/axios.js"></script>
 <script src="templates/js/home.js"></script>

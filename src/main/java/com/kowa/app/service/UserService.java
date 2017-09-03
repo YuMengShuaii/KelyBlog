@@ -21,13 +21,13 @@ public class UserService implements IUserService {
 
 
     @Override
-    public UserVo login(String username, String password){
+    public UserVo login(String username, String password) {
         UserPo user = userDao.findByUsername(username);
-        if (user==null){
+        if (user == null) {
             return null;
-        }else if(!user.getPassword().equals(password)) {
+        } else if (!user.getPassword().equals(password)) {
             return null;
-        }else {
+        } else {
             ContextHolder.setCurrentMember(user, 60 * 60 * 24 * 14);
             return new UserVo(user);
         }
@@ -36,9 +36,9 @@ public class UserService implements IUserService {
     @Override
     public UserVo isLogin() {
         UserPo userPo = ContextHolder.getCurrentMember();
-        if (userPo==null){
+        if (userPo == null) {
             return null;
-        }else{
+        } else {
             return new UserVo(userPo);
         }
     }
@@ -54,24 +54,20 @@ public class UserService implements IUserService {
     @Override
     public UserVo editInfo(String name, String phone, int sex, String content) {
         UserPo user = ContextHolder.getCurrentMember();
-        if (user==null){
-            return null;
-        }else{
-            user.setName(name);
-            user.setPhone(phone);
-            user.setSex(sex);
-            user.setContent(content);
-            userDao.save(user);
-            ContextHolder.updataCurrentMember(user);
-            return new UserVo(user);
-        }
+        user.setName(name);
+        user.setPhone(phone);
+        user.setSex(sex);
+        user.setContent(content);
+        userDao.save(user);
+        ContextHolder.updataCurrentMember(user);
+        return new UserVo(user);
     }
 
     @Override
     public UserVo register(String nikename, String username, String password) {
-        if (Utils.isEmpty(nikename)||Utils.isEmpty(username)||Utils.isEmpty(password)){
+        if (Utils.isEmpty(nikename) || Utils.isEmpty(username) || Utils.isEmpty(password)) {
             return null;
-        }else{
+        } else {
             UserPo user = new UserPo();
             user.setUsername(username);
             user.setName(nikename);
@@ -84,24 +80,20 @@ public class UserService implements IUserService {
 
     @Override
     public UserVo editFace(String face) {
-        if (Utils.isEmpty(face)){
+        if (Utils.isEmpty(face)) {
             return null;
         }
         UserPo user = ContextHolder.getCurrentMember();
-        if (user==null){
-            return null;
-        }else{
-            user.setFace(face);
-            userDao.save(user);
-            ContextHolder.updataCurrentMember(user);
-            return new UserVo(user);
-        }
+        user.setFace(face);
+        userDao.save(user);
+        ContextHolder.updataCurrentMember(user);
+        return new UserVo(user);
+
     }
 
     @Override
     public boolean checkUname(String uname) {
-
-        if (userDao.findByUsername(uname)==null){return true;}
+        if (userDao.findByUsername(uname) == null) return true;
         return false;
     }
 
