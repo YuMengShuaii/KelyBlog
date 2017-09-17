@@ -1,43 +1,38 @@
 /**
  * Created by Administrator on 2017/7/2.
  */
-var app = new Vue({
-    el: '#app',
-    data: {
-        message: 'Hello This!'
-    }
-})
-var app2 = new Vue({
-    el: '#app-2',
-    data: {
-        message: '页面加载于 ' + new Date()
-    }
-})
-var app5 = new Vue({
-        el: '#app-5',
+var openApp = new Vue({
+        el: '#openApp',
         data: {
-            message: 'Hello Vue.jsd111s!',
-            image111:'asdadsadas'
+            message: '打开App',
         },
         methods: {
-            reverseMessage: function () {
-                this.message = this.message.split('').reverse().join('')
-            },
-            loadData:function(){
-                axios.get('/login?username=yumengshuai&password=111111')
-                    .then(function (respone) {
-                        app5.message = respone.data
-                    }).catch(function (error) {
-                    console.log(error)
-                        this.message = error
-                });
+            openclint:function(){
+                window.location='Javashop://m.javashop.com/main/image'
+                var ua = navigator.userAgent.toLowerCase();
+                var startTime = Date.now();
+                var downurl = ua.indexOf('os') > 0 ? 'https://itunes.apple.com/us/app/javashop/id1040031725': 'http://www.taobao.com';
+
+                var t = setTimeout(function() {
+                    var endTime = Date.now();
+
+                    if (!startTime || endTime - startTime < 1300 + 200) {
+                        window.location = downurl;
+                    }
+                }, 1300);
+
+
+                window.onblur = function() {
+                    clearTimeout(t);
+                }
             }
         }
     })
-    axios.get('/login?username=yumengshuai&password=111111')
-    .then(function (respone) {
-        console.log(respone.data.data.content)
-    }).catch(function (error) {
-        console.log(error)
-    });
+
+    // axios.get('/login?username=yumengshuai&password=111111')
+    // .then(function (respone) {
+    //     console.log(respone.data.data.content)
+    // }).catch(function (error) {
+    //     console.log(error)
+    // });
 

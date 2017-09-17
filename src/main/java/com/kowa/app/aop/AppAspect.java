@@ -2,8 +2,6 @@ package com.kowa.app.aop;
 
 import com.kowa.app.context.ContextHolder;
 import com.kowa.app.jsonmodel.JsonUtils;
-import com.kowa.app.po.UserPo;
-import com.kowa.app.vo.UserVo;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,20 +10,30 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class LoginHelperAspect {
+public class AppAspect {
     /**
-     * 方法切入
+     * LoginHelper方法切入
      */
     @Pointcut("execution(@com.kowa.app.aop.LoginHelper * *(..))")
-    public void methodAnnotated() {
+    public void loginHelpermethodAnnotated() {
     }
 
-    @Around("methodAnnotated()")//在连接点进行方法替换
-    public Object aroundJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("loginHelpermethodAnnotated()")//在连接点进行方法替换
+    public Object loginHelper(ProceedingJoinPoint joinPoint) throws Throwable {
         if (ContextHolder.getCurrentMember() == null) {
             return JsonUtils.getErrorJson("未登录!");
         } else {
             return joinPoint.proceed();
         }
+    }
+
+    @Pointcut("execution(@com.kowa.app.aop.MemoryCache * *(..))")
+    public void memoryCacheMethodAnnotated(){
+
+    }
+
+    @Around("memoryCacheMethodAnnotated()")
+    public Object memoryCache(ProceedingJoinPoint joinPoint)throws Throwable{
+        return null;
     }
 }

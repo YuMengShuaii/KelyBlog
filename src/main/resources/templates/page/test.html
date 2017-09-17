@@ -5,16 +5,14 @@
     <link rel="stylesheet" href="./templates/css/home.css" type="text/css" >
 </head>
 <body>
-<h1  id="app"> {{ message }}</h1>
-<div id="app-2">
-  <span class="blue_solid" v-bind:title="message">
-    鼠标悬停几秒钟查aSAsSss看此处动态绑定的提示信息！
-  </span>
+<div  class="open_app">
+    <img class="image" src="https://st.360buyimg.com/item/images/5.1.1/download-bg.png?v=jd201610101735">
 </div>
-<div id="app-5">
-    <p id="message">{{ message }}</p>
-    <button v-on:click="loadData">逆转消息</button>
+<div id="openApp">
+    <span v-on:click="openclint" class="text_write" >{{ message }}</span>
+    <span class="javashop_title">JavaShop</span>
 </div>
+<img class="javshop_goods" src="templates/image/simble.png">
 <script src="templates/lib/vue/vue.js"></script>
 <script src="templates/lib/axios/axios.js"></script>
 <script src="templates/js/home.js"></script>
