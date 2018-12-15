@@ -8,15 +8,15 @@ var openApp = new Vue({
         },
         methods: {
             openclint:function(){
-                window.location='Javashop://m.javashop.com/main/image'
+                window.location="javashop://m.javashop.com/goods/detail"
                 var ua = navigator.userAgent.toLowerCase();
                 var startTime = Date.now();
-                var downurl = ua.indexOf('os') > 0 ? 'https://itunes.apple.com/us/app/javashop/id1040031725': 'http://www.taobao.com';
+                var downurl = ua.indexOf('os') > 0 ? 'https://itunes.apple.com/us/app/javashop/id1182297121': 'http://www.javamall.com/andorid.apk';
 
                 var t = setTimeout(function() {
                     var endTime = Date.now();
 
-                    if (!startTime || endTime - startTime < 1300 + 200) {
+                    if (!startTime || endTime - startTime < 3000) {
                         window.location = downurl;
                     }
                 }, 1300);

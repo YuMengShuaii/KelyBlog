@@ -1,0 +1,38 @@
+
+.blue_solid{
+    color: blue;
+}
+
+.open_app{
+    postition:relative;
+    color: black;
+    width: 100%;
+    height: 15%;
+}
+
+.image{
+    color: black;
+    width: 100%;
+    height: 15%;
+}
+
+.text_write{
+    left:10px;
+    top:10px;
+    color: white;
+    position:absolute;
+    margin-left: 72%;
+    margin-top: 3%;
+    font-size: 50px;
+}
+
+.javashop_title{
+    left:10%;
+    top:3%;
+    color: white;
+    position:absolute;
+    font-size: 50px;
+}
+.javshop_goods{
+    width: 100%;
+}

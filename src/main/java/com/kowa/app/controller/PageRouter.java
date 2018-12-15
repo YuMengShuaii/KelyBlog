@@ -20,5 +20,8 @@ public class PageRouter {
     }
 
 
-
+    @RequestMapping("/app")
+    public String app(Model model) {
+        return "/page/app";
+    }
 }

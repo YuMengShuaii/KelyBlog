@@ -18,7 +18,8 @@ import java.nio.file.Paths;
  * @Auther yumengshuai【kely】
  * @Date 17/7/3 下午7:18
  */
-@Controller
+@RestController
+@RequestMapping("/api/file")
 public class FileController {
 
     /**
